@@ -69,6 +69,7 @@ extension ImagesListViewController: UITableViewDataSource {
         }
         
         configCell(for: imageListCell, with: indexPath)
+        
         return imageListCell
     }
     
