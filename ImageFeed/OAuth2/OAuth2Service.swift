@@ -36,20 +36,26 @@ final class OAuth2Service {
     }
 }
 
-extension OAuth2Service {
-    private func object(
+private extension OAuth2Service {
+    /// Запрос и обработка ответа от сервера
+    func object(
         for request: URLRequest,
-        completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
+        complition: @escaping (Result<OAuthTokenResponseBody,Error>) -> Void
     ) -> URLSessionTask {
+        
         let decoder = JSONDecoder()
-        return urlSession.data(for: request) { (result: Result<Data, Error>) in
+        return urlSession.data(for: request ) { (result: Result<Data, Error>) in
             let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-                Result { try decoder.decode(OAuthTokenResponseBody.self, from: data) }
+                Result {
+                    try decoder.decode(OAuthTokenResponseBody.self, from: data)
+                }
             }
-            completion(response)
+            complition(response)
         }
     }
-    private func authTokenRequest(code: String) -> URLRequest {
+    
+    /// Вспомогательная функция для получения авторизационного токена
+    func authTokenRequest(code: String) -> URLRequest {
         URLRequest.makeHTTPRequest(
             path: "/oauth/token"
             + "?client_id=\(AccessKey)"
@@ -61,4 +67,5 @@ extension OAuth2Service {
             baseURL: URL(string: "https://unsplash.com")!
         )
     }
+    
 }

@@ -187,7 +187,6 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Unsplash" id="FaE-pI-Wx6"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <segue destination="zHP-yt-FsR" kind="presentation" identifier="ShowAuthenticationScreen" modalPresentationStyle="fullScreen" id="iJl-rB-rel"/>
                     </connections>
@@ -199,7 +198,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="MIj-MO-MxZ">
             <objects>
-                <tabBarController id="6rJ-rR-gc6" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" id="6rJ-rR-gc6" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="AS7-iy-z2P">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -363,7 +362,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nlh-L9-dgN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1228.985507246377" y="-1436.3839285714284"/>
+            <point key="canvasLocation" x="1126" y="-1436"/>
         </scene>
     </scenes>
     <resources>
