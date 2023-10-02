@@ -1,7 +1,7 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
-
+    
     private var avatarImageView: UIImageView = {
         let viewImageAvatar = UIImageView()
         viewImageAvatar.image = UIImage(named: "avatar")
@@ -10,7 +10,7 @@ class ProfileViewController: UIViewController {
         viewImageAvatar.contentMode = .scaleAspectFit
         return viewImageAvatar
     }()
-   
+    
     private var nameLabel: UILabel = {
         let labelName = UILabel()
         labelName.text = "Екатерина Новикова"
@@ -30,7 +30,7 @@ class ProfileViewController: UIViewController {
     }()
     
     private var descriptionLabel: UILabel = {
-       let labelDescription = UILabel ()
+        let labelDescription = UILabel ()
         labelDescription.text = "Hello, World!"
         labelDescription.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
         labelDescription.font = .systemFont(ofSize: 13)
@@ -38,7 +38,7 @@ class ProfileViewController: UIViewController {
         return labelDescription
     }()
     
-    var logoutButton: UIButton = {
+    lazy var logoutButton: UIButton = {
         let buttonLogout = UIButton.systemButton(
             with: UIImage(named: "logout_button") ?? UIImage(),
             target: self,
