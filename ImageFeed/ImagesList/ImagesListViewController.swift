@@ -1,9 +1,3 @@
-//
-//  ViewController.swift
-//  ImageFeed
-//
-//  Created by Ivan on 24.08.2023.
-//
 
 import UIKit
 
