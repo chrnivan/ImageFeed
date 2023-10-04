@@ -1,13 +1,14 @@
+
 import UIKit
 import WebKit
 
 fileprivate let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
 
-final class WebViewViewController: UIViewController {
+final class WebViewController: UIViewController {
     @IBOutlet private var webView: WKWebView!
     @IBOutlet private var progressView: UIProgressView!
     
-    weak var delegate: WebViewViewControllerDelegate?
+    weak var delegate: WebViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +65,7 @@ final class WebViewViewController: UIViewController {
     }
 }
 
-extension WebViewViewController: WKNavigationDelegate {
+extension WebViewController: WKNavigationDelegate {
     func webView(
         _ webView: WKWebView,
         decidePolicyFor navigationAction: WKNavigationAction,

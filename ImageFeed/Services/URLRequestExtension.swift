@@ -1,9 +1,3 @@
-//
-//  URLRequestExtension.swift
-//  ImageFeed
-//
-//  Created by Ivan on 30.09.2023.
-//
 
 import UIKit
 

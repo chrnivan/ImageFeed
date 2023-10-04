@@ -37,7 +37,6 @@ final class OAuth2Service {
 }
 
 private extension OAuth2Service {
-    /// Запрос и обработка ответа от сервера
     func object(
         for request: URLRequest,
         complition: @escaping (Result<OAuthTokenResponseBody,Error>) -> Void
@@ -54,7 +53,6 @@ private extension OAuth2Service {
         }
     }
     
-    /// Вспомогательная функция для получения авторизационного токена
     func authTokenRequest(code: String) -> URLRequest {
         URLRequest.makeHTTPRequest(
             path: "/oauth/token"
@@ -67,5 +65,4 @@ private extension OAuth2Service {
             baseURL: URL(string: "https://unsplash.com")!
         )
     }
-    
 }

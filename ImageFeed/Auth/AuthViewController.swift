@@ -1,3 +1,4 @@
+
 import UIKit
 
 final class AuthViewController: UIViewController {
@@ -8,7 +9,7 @@ final class AuthViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == ShowWebViewSegueIdentifier {
             guard
-                let webViewViewController = segue.destination as? WebViewViewController
+                let webViewViewController = segue.destination as? WebViewController
             else { fatalError("Failed to prepare for \(ShowWebViewSegueIdentifier)") }
             webViewViewController.delegate = self
         } else {
@@ -17,12 +18,12 @@ final class AuthViewController: UIViewController {
     }
 }
 
-extension AuthViewController: WebViewViewControllerDelegate {
-    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+extension AuthViewController: WebViewControllerDelegate {
+    func webViewViewController(_ vc: WebViewController, didAuthenticateWithCode code: String) {
         delegate?.authViewController(self, didAuthenticateWithCode: code)
     }
 
-    func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
+    func webViewViewControllerDidCancel(_ vc: WebViewController) {
         dismiss(animated: true)
     }
 }

@@ -307,10 +307,10 @@
             </objects>
             <point key="canvasLocation" x="-671" y="-1436"/>
         </scene>
-        <!--Web View View Controller-->
+        <!--Web View Controller-->
         <scene sceneID="uOk-pA-WGm">
             <objects>
-                <viewController id="Rjf-Et-JOx" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Rjf-Et-JOx" customClass="WebViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ZQs-s7-Uz7">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
