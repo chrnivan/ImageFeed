@@ -25,6 +25,7 @@ final class ProfileImageService {
     ){
         assert(Thread.isMainThread)
         if avatarURL != nil { return }
+        task?.cancel()
         guard let token = oauth2TokenStorage.token else { return }
         let request = profileImageRequest(token: token, username: username)
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<UserResult, Error>) in
@@ -39,6 +40,7 @@ final class ProfileImageService {
                         name: ProfileImageService.DidChangeNotification,
                         object: self,
                         userInfo: ["URL": self.avatarURL])
+                self.task = nil
             case .failure(let error):
                 completion(.failure(error))
             }
