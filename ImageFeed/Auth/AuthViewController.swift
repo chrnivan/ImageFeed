@@ -1,4 +1,9 @@
-
+//
+//  AuthViewController.swift
+//  ImageFeed
+//
+//  Created by Ivan on 16.10.2023.
+//
 import UIKit
 
 final class AuthViewController: UIViewController {

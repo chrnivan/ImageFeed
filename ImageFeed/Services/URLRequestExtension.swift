@@ -1,3 +1,9 @@
+//
+//  URLRequestExtension.swift
+//  ImageFeed
+//
+//  Created by Ivan on 16.10.2023.
+//
 
 import UIKit
 
@@ -7,13 +13,9 @@ extension URLRequest {
         httpMethod: String,
         baseURL: URL? = DefaultBaseURL
     ) -> URLRequest? {
-        guard let baseURL = baseURL,
-              let url = URL(string: path, relativeTo: baseURL) else {
-            assertionFailure("Failed to create URL with path: \(path)")
-            return nil
-        }
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: URL(string: path, relativeTo: baseURL) ?? DefaultBaseURL)
         request.httpMethod = httpMethod
         return request
     }
 }
+

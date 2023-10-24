@@ -1,10 +1,17 @@
+//
+//  ProfileViewController.swift
+//  ImageFeed
+//
+//  Created by Ivan on 16.10.2023.
+//
+
 
 import UIKit
 import Kingfisher
 
 class ProfileViewController: UIViewController {
     
-    private let oauth2TokenStorage = OAuth2TokenStorage.shared
+    private let oauth2TokenStorage = OAuth2TokenStorage()
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     private var profileImageServiceObserver: NSObjectProtocol? 
@@ -129,7 +136,6 @@ class ProfileViewController: UIViewController {
     
     @objc
     private func didTapLogoutButton() {
-        oauth2TokenStorage.token = nil
     }
 }
 

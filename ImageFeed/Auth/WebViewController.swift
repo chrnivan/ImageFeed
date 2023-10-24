@@ -1,9 +1,11 @@
-
+//
+//  WebViewContoller.swift
+//  ImageFeed
+//
+//  Created by Ivan on 16.10.2023.
+//
 import UIKit
 import WebKit
-
-
-
 
 final class WebViewController: UIViewController {
     

@@ -1,4 +1,9 @@
-
+//
+//  SplashViewController.swift
+//  ImageFeed
+//
+//  Created by Ivan on 16.10.2023.
+//
 import UIKit
 import ProgressHUD
 
@@ -25,8 +30,9 @@ final class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let token = oauth2TokenStorage.token {
-            self.fetchProfile(token: token)
+        if oauth2TokenStorage.token != nil {
+            guard let token = oauth2TokenStorage.token else { return }
+            fetchProfile(token: token)
         } else {
             switchToAuthViewController()
         }
@@ -41,6 +47,7 @@ final class SplashViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        view.backgroundColor = UIColor(red: 0.102, green: 0.106, blue: 0.133, alpha: 1)
         setNeedsStatusBarAppearanceUpdate()
     }
     
@@ -82,12 +89,11 @@ extension SplashViewController {
         profileService.fetchProfile(token) { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success(let data):
-                profileImageService.fetchProfileImageURL(
-                    token: token,
-                    username: data.userName
-                ){ [ weak self ]_ in
-                    self?.showToTabBarController()
+            case .success:
+                guard let username = self.profileService.profile?.userName else { return }
+                self.profileImageService.fetchProfileImageURL(username: username)  { _ in }
+                DispatchQueue.main.async {
+                    self.showToTabBarController()
                 }
             case .failure:
                 self.showNetworkError()
@@ -110,6 +116,7 @@ extension SplashViewController {
             guard let self = self else { return }
             switch result {
             case .success(let token):
+                self.oauth2TokenStorage.token = token
                 self.fetchProfile(token: token)
             case .failure:
                 self.showNetworkError()
@@ -122,16 +129,16 @@ extension SplashViewController {
 //MARK: - AlertPresenter
 extension SplashViewController {
     private func showNetworkError() {
-            let alert = AlertModel(
-                title: "Что-то пошло не так(",
-                message: "Не удалось войти в систему",
-                buttonText: "ОК",
-                completion: { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-                })
-        
+        let alert = AlertModel(
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
+            buttonText: "ОК",
+            completion: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+            })
         alertPresenter?.showError(for: alert)
     }
 }
+

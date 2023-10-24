@@ -1,4 +1,9 @@
-
+//
+//  WebViewControllerDelegate.swift
+//  ImageFeed
+//
+//  Created by Ivan on 16.10.2023.
+//
 import Foundation
 
 protocol WebViewControllerDelegate: AnyObject {

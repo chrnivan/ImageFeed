@@ -1,4 +1,9 @@
-
+//
+//  OAuthService.swift
+//  ImageFeed
+//
+//  Created by Ivan on 16.10.2023.
+//
 import Foundation
 
 final class OAuth2Service {
@@ -10,12 +15,10 @@ final class OAuth2Service {
     
     private (set) var authToken: String? {
         get {
-            let tokenStorage = OAuth2TokenStorage()
-            return tokenStorage.token
+            return OAuth2TokenStorage().token
         }
         set {
-            let tokenStorage = OAuth2TokenStorage()
-            tokenStorage.token = newValue
+            OAuth2TokenStorage().token = newValue
         }
     }
     
@@ -31,18 +34,15 @@ final class OAuth2Service {
         guard let request = authTokenRequest(code: code) else { return }
         let task = urlSession.objectTask(for: request) { [weak self] (result:
             Result<OAuthTokenResponseBody, Error>) in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-                switch result {
-                case .success(let body):
-                    let authToken = body.accessToken
-                    self.authToken = authToken
-                    completion(.success(authToken))
-                    self.task = nil
-                case .failure(let error):
-                    completion(.failure(error))
-                    self.lastCode = nil
-                }
+            guard let self = self else { return }
+            switch result {
+            case .success(let body):
+                let authToken = body.accessToken
+                self.authToken = authToken
+                completion(.success(authToken))
+                self.task = nil
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
         self.task = task
