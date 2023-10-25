@@ -32,12 +32,12 @@ final class WebViewController: UIViewController {
                  self.updateProgress()
              })
         
-        var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
+        var urlComponents = URLComponents(string: KeyAndUrl.unsplashAuthorizeUrlString)!
         urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: AccessKey),
-            URLQueryItem(name: "redirect_uri", value: RedirectURI),
+            URLQueryItem(name: "client_id", value: KeyAndUrl.accessKey),
+            URLQueryItem(name: "redirect_uri", value: KeyAndUrl.redirectUrl),
             URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: AccessScope)
+            URLQueryItem(name: "scope", value: KeyAndUrl.accessScope)
         ]
         
         guard let url = urlComponents.url else { return }
@@ -119,13 +119,14 @@ extension WebViewController: WKNavigationDelegate {
 //MARK: - AlertPresenter
 extension WebViewController {
     private func showNetworkError() {
-        let alert = AlertModel(title: "Что-то пошло не так(",
-                               message: "Не удалось войти в систему",
-                               buttonText: "Ок",
-                               completion: { [weak self] in
-            guard let self = self else { return }
-            dismiss(animated: true)
-        })
+        let alert = AlertModel(
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
+            buttonText: "Ок",
+            completion: { [weak self] in
+                guard let self = self else { return }
+                dismiss(animated: true)
+            })
         alertPresenter = AlertPresenter(delegate: self)
         alertPresenter?.showError(for: alert)
     }

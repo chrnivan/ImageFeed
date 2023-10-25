@@ -7,11 +7,11 @@
 
 import UIKit
 
-class SingleImageViewController: UIViewController {
+final class SingleImageViewController: UIViewController {
     
     @IBOutlet private var imageView: UIImageView!
     
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet private weak var scrollView: UIScrollView!
     
     var image: UIImage! {
         didSet {
@@ -46,11 +46,11 @@ class SingleImageViewController: UIViewController {
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
     
-    @IBAction func didTapBackButton() {
+    @IBAction private func didTapBackButton() {
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func didTapShareButton(_ sender: UIButton) {
+    @IBAction private func didTapShareButton(_ sender: UIButton) {
         let share = UIActivityViewController(
             activityItems: [image as Any],
             applicationActivities: nil

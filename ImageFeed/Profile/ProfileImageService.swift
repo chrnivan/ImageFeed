@@ -11,10 +11,10 @@ final class ProfileImageService {
     
     //MARK: - Private Properties
     static let shared = ProfileImageService()
-    private (set) var avatarURL: String?
+    private (set) var avatarUrl: String?
     private var task: URLSessionTask?
     private let urlSession = URLSession.shared
-    static let DidChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
+    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private init() {}
     
@@ -24,7 +24,7 @@ final class ProfileImageService {
         _ completion: @escaping (Result<String, Error>) -> Void
     ){
         assert(Thread.isMainThread)
-        if avatarURL != nil { return }
+        if avatarUrl != nil { return }
         task?.cancel()
         guard let token = oauth2TokenStorage.token else { return }
         let request = profileImageRequest(token: token, username: username)
@@ -32,14 +32,14 @@ final class ProfileImageService {
             guard let self = self else { return }
             switch result {
             case .success(let body):
-                let avatarURL = ProfileImage(callData: body)
-                self.avatarURL = avatarURL.smallImage["large"]
-                completion(.success(self.avatarURL ?? ""))
+                let avatarUrl = ProfileImage(callData: body)
+                self.avatarUrl = avatarUrl.smallImage["large"]
+                completion(.success(self.avatarUrl ?? ""))
                 NotificationCenter.default
                     .post(
-                        name: ProfileImageService.DidChangeNotification,
+                        name: ProfileImageService.didChangeNotification,
                         object: self,
-                        userInfo: ["URL": self.avatarURL])
+                        userInfo: ["URL": self.avatarUrl])
                 self.task = nil
             case .failure(let error):
                 completion(.failure(error))
@@ -54,7 +54,7 @@ final class ProfileImageService {
 private extension ProfileImageService {
     private func profileImageRequest(token: String, username: String) -> URLRequest {
         guard let url = URL(
-            string: "\(defaultBaseApiURL)" + "/users/" + username)
+            string: "\(KeyAndUrl.defaultBaseApiUrl)" + "/users/" + username)
         else {
             fatalError("Failed to create URL")
         }

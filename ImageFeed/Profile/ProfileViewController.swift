@@ -93,7 +93,7 @@ class ProfileViewController: UIViewController {
         descriptionLabel.text = profile.bio
         
         profileImageServiceObserver = NotificationCenter.default.addObserver(
-            forName: ProfileImageService.DidChangeNotification,
+            forName: ProfileImageService.didChangeNotification,
             object: nil,
             queue: .main
         ) { [weak self] _ in
@@ -142,7 +142,7 @@ class ProfileViewController: UIViewController {
 private extension ProfileViewController {
     func loadAvatar() {
         guard
-            let avatarURL = profileImageService.avatarURL,
+            let avatarURL = profileImageService.avatarUrl,
             let profleURL = URL(string: avatarURL) else { return }
         
         let cache = ImageCache.default

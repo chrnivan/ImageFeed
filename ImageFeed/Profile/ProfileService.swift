@@ -44,7 +44,7 @@ final class ProfileService {
 private extension ProfileService {
     func profileRequest(token: String) -> URLRequest {
         guard let url = URL(
-            string: "\(defaultBaseApiURL)"
+            string: "\(KeyAndUrl.defaultBaseApiUrl)"
             + "/me")
         else {
             fatalError("Failed to create URL")

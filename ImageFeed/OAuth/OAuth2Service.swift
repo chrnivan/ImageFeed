@@ -54,9 +54,9 @@ private extension OAuth2Service {
     func authTokenRequest(code: String) -> URLRequest? {
         URLRequest.makeHTTPRequest(
             path: "/oauth/token"
-            + "?client_id=\(AccessKey)"
-            + "&&client_secret=\(SecretKey)"
-            + "&&redirect_uri=\(RedirectURI)"
+            + "?client_id=\(KeyAndUrl.accessKey)"
+            + "&&client_secret=\(KeyAndUrl.secretKey)"
+            + "&&redirect_uri=\(KeyAndUrl.redirectUrl)"
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             httpMethod: "POST",
