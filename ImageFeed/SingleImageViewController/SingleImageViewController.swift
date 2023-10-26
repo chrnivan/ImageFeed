@@ -1,7 +1,18 @@
+//
+//  SingleImageViewController.swift
+//  ImageFeed
+//
+//  Created by Ivan on 16.10.2023.
+//
 
 import UIKit
 
-class SingleImageViewController: UIViewController {
+final class SingleImageViewController: UIViewController {
+    
+    @IBOutlet private var imageView: UIImageView!
+    
+    @IBOutlet private weak var scrollView: UIScrollView!
+    
     var image: UIImage! {
         didSet {
             guard isViewLoaded else { return }
@@ -10,20 +21,6 @@ class SingleImageViewController: UIViewController {
         }
     }
     
-    @IBAction func didTapBackButton() {
-        dismiss(animated: true, completion: nil)
-    }
-    @IBOutlet private var imageView: UIImageView!
-    
-    @IBOutlet weak var scrollView: UIScrollView!
-    
-    @IBAction func didTapShareButton(_ sender: UIButton) {
-        let share = UIActivityViewController(
-            activityItems: [image as Any],
-            applicationActivities: nil
-        )
-        present(share, animated: true, completion: nil)
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.minimumZoomScale = 0.1
@@ -47,6 +44,18 @@ class SingleImageViewController: UIViewController {
         let x = (newContentSize.width - visibleRectSize.width) / 2
         let y = (newContentSize.height - visibleRectSize.height) / 2
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
+    }
+    
+    @IBAction private func didTapBackButton() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction private func didTapShareButton(_ sender: UIButton) {
+        let share = UIActivityViewController(
+            activityItems: [image as Any],
+            applicationActivities: nil
+        )
+        present(share, animated: true, completion: nil)
     }
 }
 

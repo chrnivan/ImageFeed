@@ -1,4 +1,9 @@
-
+//
+//  ImagesListViewController.swift
+//  ImageFeed
+//
+//  Created by Ivan on 16.10.2023.
+//
 import UIKit
 
 final class ImagesListViewController: UIViewController {
@@ -35,7 +40,7 @@ extension ImagesListViewController {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
             return
         }
-    
+        
         cell.cellImage.image = image
         cell.dateLabel.text = dateFormatter.string(from: Date())
         
@@ -84,6 +89,6 @@ extension ImagesListViewController: UITableViewDataSource {
     
 }
 
-    
+
 
 

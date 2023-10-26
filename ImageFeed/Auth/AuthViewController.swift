@@ -1,10 +1,15 @@
-
+//
+//  AuthViewController.swift
+//  ImageFeed
+//
+//  Created by Ivan on 16.10.2023.
+//
 import UIKit
 
 final class AuthViewController: UIViewController {
-    private let ShowWebViewSegueIdentifier = "ShowWebView"
-
+    
     weak var delegate: AuthViewControllerDelegate?
+    private let ShowWebViewSegueIdentifier = "ShowWebView"
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == ShowWebViewSegueIdentifier {

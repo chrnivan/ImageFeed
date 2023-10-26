@@ -1,19 +1,33 @@
-
+//
+//  OAuth2TokenStorage.swift
+//  ImageFeed
+//
+//  Created by Ivan on 16.10.2023.
+//
 import Foundation
+import SwiftKeychainWrapper
 
 class OAuth2TokenStorage {
+    
+    static let shared = OAuth2TokenStorage()
+    private let keychainKeeping = KeychainWrapper.standard
+    private let keyToken = "Bearer"
     private enum Keys: String {
         case token
     }
     
-    private let userDefaults = UserDefaults.standard
-    
     var token: String? {
         get {
-            userDefaults.string(forKey: Keys.token.rawValue)
+            keychainKeeping.string(forKey: keyToken)
         }
         set {
-            userDefaults.set(newValue, forKey: Keys.token.rawValue)
+            if let token = newValue {
+                keychainKeeping.set(token, forKey: keyToken)
+            } else {
+                keychainKeeping.removeObject(forKey: keyToken)
+            }
         }
     }
+    
+    init() {}
 }

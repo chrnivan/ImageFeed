@@ -1,10 +1,16 @@
-
+//
+//  OAuthService.swift
+//  ImageFeed
+//
+//  Created by Ivan on 16.10.2023.
+//
 import Foundation
 
 final class OAuth2Service {
     
     static let shared = OAuth2Service()
-    
+    private var task: URLSessionTask?
+    private var lastCode: String?
     private let urlSession = URLSession.shared
     
     private (set) var authToken: String? {
@@ -20,45 +26,37 @@ final class OAuth2Service {
         _ code: String,
         completion: @escaping (Result<String, Error>) -> Void
     ) {
-        let request = authTokenRequest(code: code)
-        let task = object(for: request) { [weak self] result in
+        assert(Thread.isMainThread)
+        if lastCode == code { return }
+        task?.cancel()
+        lastCode = code
+        
+        guard let request = authTokenRequest(code: code) else { return }
+        let task = urlSession.objectTask(for: request) { [weak self] (result:
+            Result<OAuthTokenResponseBody, Error>) in
             guard let self = self else { return }
             switch result {
             case .success(let body):
                 let authToken = body.accessToken
                 self.authToken = authToken
                 completion(.success(authToken))
+                self.task = nil
             case .failure(let error):
                 completion(.failure(error))
             }
         }
+        self.task = task
         task.resume()
     }
 }
 
 private extension OAuth2Service {
-    func object(
-        for request: URLRequest,
-        complition: @escaping (Result<OAuthTokenResponseBody,Error>) -> Void
-    ) -> URLSessionTask {
-        
-        let decoder = JSONDecoder()
-        return urlSession.data(for: request ) { (result: Result<Data, Error>) in
-            let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-                Result {
-                    try decoder.decode(OAuthTokenResponseBody.self, from: data)
-                }
-            }
-            complition(response)
-        }
-    }
-    
-    func authTokenRequest(code: String) -> URLRequest {
+    func authTokenRequest(code: String) -> URLRequest? {
         URLRequest.makeHTTPRequest(
             path: "/oauth/token"
-            + "?client_id=\(AccessKey)"
-            + "&&client_secret=\(SecretKey)"
-            + "&&redirect_uri=\(RedirectURI)"
+            + "?client_id=\(KeyAndUrl.accessKey)"
+            + "&&client_secret=\(KeyAndUrl.secretKey)"
+            + "&&redirect_uri=\(KeyAndUrl.redirectUrl)"
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             httpMethod: "POST",
