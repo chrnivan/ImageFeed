@@ -14,7 +14,8 @@ class ProfileViewController: UIViewController {
     private let oauth2TokenStorage = OAuth2TokenStorage()
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
-    private var profileImageServiceObserver: NSObjectProtocol? 
+    private var alertPresenter: AlertPresenterProtocol?
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     private var avatarImageView: UIImageView = {
         let viewImageAvatar = UIImageView()
@@ -65,6 +66,7 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        alertPresenter = AlertPresenter(delegate: self)
         
         view.backgroundColor = UIColor(red: 0.102, green: 0.106, blue: 0.133, alpha: 1)
         
@@ -136,6 +138,7 @@ class ProfileViewController: UIViewController {
     
     @objc
     private func didTapLogoutButton() {
+        showAlertExit()
     }
 }
 
@@ -153,10 +156,38 @@ private extension ProfileViewController {
         avatarImageView.kf.indicatorType = .activity
         avatarImageView.kf.setImage(
             with: profleURL,
-            placeholder: UIImage(named: "tab_editorial_active 1"),
+            placeholder: UIImage(named: "ProfileActive"),
             options: [.processor(processor)]
         )
         avatarImageView.layer.masksToBounds = true
         avatarImageView.layer.cornerRadius = 34
+    }
+    
+    func exitProfile() {
+        OAuth2TokenStorage().token = nil
+        WebViewController.clean()
+        guard let window = UIApplication.shared.windows.first else {
+            fatalError("Invalid Configuration") }
+        window.rootViewController = SplashViewController()
+    }
+    
+    func showAlertExit() {
+        DispatchQueue.main.async {
+            let alert = AlertModel(
+                title: "Пока, пока!",
+                message: "Уверены, что хотите выйти?",
+                buttonText: "Да",
+                completion: { [weak self] in
+                    guard let self = self else { return }
+                    self.exitProfile()
+                },
+                nextButtonText: "Нет",
+                nextCompletion: { [weak self] in
+                    guard let self = self else { return }
+                    self.dismiss(animated: true)
+                })
+            
+            self.alertPresenter?.showError(for: alert)
+        }
     }
 }

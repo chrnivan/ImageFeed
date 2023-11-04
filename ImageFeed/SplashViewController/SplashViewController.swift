@@ -79,7 +79,8 @@ extension SplashViewController {
     }
     
     private func showToTabBarController() {
-        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+        guard let window = UIApplication.shared.windows.first else { assertionFailure("Invalid Configuration")
+            return }
         let tabBarController = UIStoryboard(name: mainID, bundle: .main)
             .instantiateViewController(withIdentifier: tabBarViewControllerID)
         window.rootViewController = tabBarController
@@ -96,7 +97,7 @@ extension SplashViewController {
                     self.showToTabBarController()
                 }
             case .failure:
-                self.showNetworkError()
+                self.showError()
             }
             UIBlockingProgressHUD.dismiss()
         }
@@ -119,7 +120,7 @@ extension SplashViewController {
                 self.oauth2TokenStorage.token = token
                 self.fetchProfile(token: token)
             case .failure:
-                self.showNetworkError()
+                self.showError()
             }
             UIBlockingProgressHUD.dismiss()
         }
@@ -128,7 +129,7 @@ extension SplashViewController {
 
 //MARK: - AlertPresenter
 extension SplashViewController {
-    private func showNetworkError() {
+    private func showError() {
         let alert = AlertModel(
             title: "Что-то пошло не так(",
             message: "Не удалось войти в систему",
@@ -137,6 +138,8 @@ extension SplashViewController {
                 guard let self = self else {
                     return
                 }
+                oauth2TokenStorage.token = nil
+                WebViewController.clean()
             })
         alertPresenter?.showError(for: alert)
     }
