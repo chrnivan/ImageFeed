@@ -28,6 +28,14 @@ final class AlertPresenter: AlertPresenterProtocol {
             }
         alert.addAction(action)
         
+        if let nextButtonText = model.nextButtonText {
+            let nextAction = UIAlertAction(
+                title: nextButtonText,
+                style: .default) { _ in
+                model.nextCompletion()
+            }
+        alert.addAction(nextAction)
+        }
         delegate?.present(alert, animated: true)
     }
 }
