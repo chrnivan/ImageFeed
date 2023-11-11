@@ -166,6 +166,7 @@ private extension ProfileViewController {
     func exitProfile() {
         OAuth2TokenStorage().token = nil
         WebViewController.clean()
+        profileService.clean()
         guard let window = UIApplication.shared.windows.first else {
             fatalError("Invalid Configuration") }
         window.rootViewController = SplashViewController()

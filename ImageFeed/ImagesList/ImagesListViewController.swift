@@ -16,8 +16,8 @@ final class ImagesListViewController: UIViewController {
     var photos: [Photo] = []
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
+        formatter.dateFormat = "dd MMMM yyyy"
+        formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
     
@@ -134,14 +134,16 @@ extension ImagesListViewController: ImagesListCellDelegate {
         imagesListService.changeLike(
             photoId: photo.id,
             isLike: photo.isLiked) { result in
-                switch result {
-                case .success:
-                    self.photos = self.imagesListService.photos
-                    cell.setIsLiked(isLiked: self.photos[indexPath.row].isLiked)
-                case .failure:
-                    self.showError()
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success:
+                        self.photos = self.imagesListService.photos
+                        cell.setIsLiked(isLiked: self.photos[indexPath.row].isLiked)
+                    case .failure:
+                        self.showError()
+                    }
+                    UIBlockingProgressHUD.dismiss()
                 }
-                UIBlockingProgressHUD.dismiss()
             }
     }
 }

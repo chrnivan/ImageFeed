@@ -60,7 +60,10 @@ final class SplashViewController: UIViewController {
 extension SplashViewController: AuthViewControllerDelegate {
     private func switchToAuthViewController() {
         let storyboard = UIStoryboard(name: mainID, bundle: .main).instantiateViewController(identifier: authViewControllerID)
-        guard let authViewController = storyboard as? AuthViewController else { return }
+        guard let authViewController = storyboard as? AuthViewController else {
+            assertionFailure("Failed to show Authentication Screen")
+            return
+        }
         authViewController.delegate = self
         authViewController.modalPresentationStyle = .fullScreen
         present(authViewController, animated: true)
@@ -71,9 +74,9 @@ extension SplashViewController: AuthViewControllerDelegate {
 
 extension SplashViewController {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
+        UIBlockingProgressHUD.show()
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
-            UIBlockingProgressHUD.show()
             self.fetchOAuthToken(code)
         }
     }
@@ -97,7 +100,7 @@ extension SplashViewController {
                     self.showToTabBarController()
                 }
             case .failure:
-                self.showError()
+                self.showAlert()
             }
             UIBlockingProgressHUD.dismiss()
         }
@@ -120,7 +123,7 @@ extension SplashViewController {
                 self.oauth2TokenStorage.token = token
                 self.fetchProfile(token: token)
             case .failure:
-                self.showError()
+                self.showAlert()
             }
             UIBlockingProgressHUD.dismiss()
         }
@@ -129,7 +132,7 @@ extension SplashViewController {
 
 //MARK: - AlertPresenter
 extension SplashViewController {
-    private func showError() {
+    private func showAlert() {
         let alert = AlertModel(
             title: "Что-то пошло не так(",
             message: "Не удалось войти в систему",
@@ -140,7 +143,9 @@ extension SplashViewController {
                 }
                 oauth2TokenStorage.token = nil
                 WebViewController.clean()
+                profileService.clean()
             })
+        switchToAuthViewController()
         alertPresenter?.showError(for: alert)
     }
 }
