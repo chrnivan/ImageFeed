@@ -44,31 +44,35 @@ final class ProfileTests: XCTestCase {
     }
     
     
-    /* func testPresenterCallsUpdateProfile() {
-     let profileService = ProfileService.shared
-     //given
-     let presenter = ProfileViewPresenterSpy(profileService: profileService)
-     let profileViewController = ProfileViewControllerSpy(presenter: presenter)
-     let profilePresenter = ProfileViewPresenter()
-     profileViewController.presenter = profilePresenter
-     profilePresenter.view = profileViewController
-     
-     let user = "test"
-     let profile = Profile(callData: ProfileResult(userName: user, 
-     firstName: user,
-     lastName: user,
-     bio: user))
-     
-     //when
-     profileViewController.updateProfileDetails(profile: profile)
-     
-     //then
-     XCTAssertTrue(profileViewController.viewDidUpdateProfileDetails)
-     XCTAssertEqual(profileViewController.nameLabel.text, user)
-     XCTAssertEqual(profileViewController.loginNameLabel.text, user)
-     XCTAssertEqual(profileViewController.descriptionLabel.text, user)
-     }
-     */
+    func testPresenterCallsUpdateProfile() {
+        let profileService = ProfileService.shared
+        //given
+        let presenter = ProfileViewPresenterSpy(profileService: profileService)
+        let profileViewController = ProfileViewControllerSpy(presenter: presenter)
+        let profilePresenter = ProfileViewPresenter()
+        profileViewController.presenter = profilePresenter
+        profilePresenter.view = profileViewController
+        
+        let test = "test"
+        let userName = "chrnivan"
+        let nameLabel = "Ivan Cherkashin"
+        let firstName = "Ivan"
+        let lastName = "Cherkashin"
+        let loginNameLabel = "@chrnivan"
+        let profile = Profile(callData: ProfileResult(userName: userName,
+                                                      firstName: firstName,
+                                                      lastName: lastName,
+                                                      bio: test))
+        
+        //when
+        profileViewController.updateProfileDetails(profile: profile)
+        
+        //then
+        XCTAssertTrue(profileViewController.viewDidUpdateProfileDetails)
+        XCTAssertEqual(profileViewController.nameLabel.text, nameLabel)
+        XCTAssertEqual(profileViewController.loginNameLabel.text, loginNameLabel)
+        XCTAssertEqual(profileViewController.descriptionLabel.text, test)
+    }
     
     func testExitProfile() {
         //given

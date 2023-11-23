@@ -78,11 +78,12 @@ extension ImagesListViewController {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row + 1 == imagesListService.photos.count {
-            presenter?.fetchPhotosNextPage()
+        if !ProcessInfo.processInfo.arguments.contains("testMode") {
+            if indexPath.row + 1 == imagesListService.photos.count {
+                presenter?.fetchPhotosNextPage()
+            }
         }
     }
-    
      func updateTableViewAnimated() {
         let oldCount = photos.count
         let newCount = imagesListService.photos.count
