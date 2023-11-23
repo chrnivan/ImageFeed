@@ -18,6 +18,7 @@ final class SplashViewController: UIViewController {
     private let authViewControllerID = "AuthViewController"
     private let tabBarViewControllerID = "TabBarViewController"
     private let mainID = "Main"
+    var presenter: ProfileViewPresenterProtocol?
     private let spleshScreenLogoImageView: UIImageView = {
         let viewImageLogoScreenSplesh = UIImageView()
         viewImageLogoScreenSplesh.image = UIImage(named: "SplashScreenLogo")
@@ -142,7 +143,7 @@ extension SplashViewController {
                     return
                 }
                 oauth2TokenStorage.token = nil
-                WebViewController.clean()
+                profileService.cleanCookies()
                 profileService.clean()
             })
         switchToAuthViewController()

@@ -110,7 +110,7 @@ extension ImagesListService {
         var request = URLRequest.makeHTTPRequest(
             path: "/photos?page=\(page)&&per_page=\(perPage)",
             httpMethod: "GET",
-            baseURL: URL(string: "\(KeyAndUrl.defaultBaseApiUrl)")!)
+            baseURL: URL(string: "\(DefaultBaseURL)")!)
         request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
@@ -119,7 +119,7 @@ extension ImagesListService {
         var request = URLRequest.makeHTTPRequest(
             path: "photos/\(photoId)/like",
             httpMethod: "POST",
-            baseURL: URL(string: "\(KeyAndUrl.defaultBaseApiUrl)")!)
+            baseURL: URL(string: "\(DefaultBaseURL)")!)
         request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
@@ -128,7 +128,7 @@ extension ImagesListService {
         var request = URLRequest.makeHTTPRequest(
             path: "photos/\(photoId)/like",
             httpMethod: "DELETE",
-            baseURL: URL(string: "\(KeyAndUrl.defaultBaseApiUrl)")!)
+            baseURL: URL(string: "\(DefaultBaseURL)")!)
         request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
